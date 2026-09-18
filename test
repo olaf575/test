@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SHK Rechner PRO</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f2f4f7;color:#172033}
+header{background:#101827;color:white;padding:28px 20px 24px;border-radius:0 0 28px 28px}
+h1{margin:0;font-size:30px}
+p{color:#687386}
+header p{color:#b9c3d2;margin:6px 0 0}
+main{padding:18px}
+.card{background:white;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 3px 15px #0000000d}
+.card h2{margin:0 0 6px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{width:100%;border:0;border-radius:14px;padding:16px;font-size:16px;font-weight:600;background:#2563eb;color:white}
+input,select{width:100%;padding:14px;border:1px solid #d6dbe3;border-radius:12px;font-size:17px;margin:6px 0 12px}
+.result{font-size:28px;font-weight:700;color:#2563eb;margin-top:12px}
+.small{font-size:13px;color:#7b8494}
+</style>
+</head>
+<body>
+
+<header>
+<h1>SHK Rechner PRO</h1>
+<p>Deine digitale Werkzeugkiste</p>
+</header>
+
+<main>
+
+<div class="card">
+<h2>🔥 Heizung & Wärme</h2>
+<div class="grid">
+<button onclick="show('waerme')">Wärmeleistung</button>
+<button onclick="show('volumenstrom')">Volumenstrom</button>
+</div>
+</div>
+
+<div class="card">
+<h2>💧 Sanitär & Wasser</h2>
+<div class="grid">
+<button onclick="alert('Sanitär-Rechner kommt als Nächstes.')">Durchfluss</button>
+<button onclick="alert('Rohrdimensionierung kommt als Nächstes.')">Rohrdimension</button>
+</div>
+</div>
+
+<div class="card">
+<h2>⚡ Elektro</h2>
+<button onclick="alert('Elektro-Rechner kommt als Nächstes.')">Elektro-Rechner</button>
+</div>
+
+<div class="card">
+<h2>📐 Mengen & Material</h2>
+<button onclick="alert('Mengen-Rechner kommt als Nächstes.')">Mengen berechnen</button>
+</div>
+
+<div id="rechner"></div>
+
+</main>
+
+<script>
+function show(type){
+let html='';
+
+if(type==='waerme'){
+html=`
+<div class="card">
+<h2>🔥 Wärmeleistung</h2>
+<p>Raumvolumen × Wärmebedarf</p>
+<label>Länge (m)</label>
+<input id="l" type="number" value="5">
+<label>Breite (m)</label>
+<input id="b" type="number" value="4">
+<label>Höhe (m)</label>
+<input id="h" type="number" value="2.5">
+<label>Wärmebedarf (W/m³)</label>
+<input id="q" type="number" value="25">
+<button onclick="calcHeat()">Berechnen</button>
+<div id="heatResult"></div>
+</div>`;
+}
+
+if(type==='volumenstrom'){
+html=`
+<div class="card">
+<h2>💧 Heizungs-Volumenstrom</h2>
+<p>Berechnung aus Leistung und Temperaturspreizung</p>
+<label>Leistung (kW)</label>
+<input id="kw" type="number" value="10">
+<label>Temperaturspreizung ΔT (K)</label>
+<input id="dt" type="number" value="20">
+<button onclick="calcFlow()">Berechnen</button>
+<div id="flowResult"></div>
+</div>`;
+}
+
+document.getElementById('rechner').innerHTML=html;
+window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+}
+
+function calcHeat(){
+let v=+l.value*+b.value*+h.value;
+let w=v*+q.value;
+document.getElementById('heatResult').innerHTML=
+'<div class="result">'+w.toLocaleString('de-DE')+' W</div>'+
+'<div class="small">Raumvolumen: '+v.toFixed(2)+' m³</div>';
+}
+
+function calcFlow(){
+let flow=(+kw.value*860)/+dt.value;
+document.getElementById('flowResult').innerHTML=
+'<div class="result">'+flow.toFixed(0)+' l/h</div>'+
+'<div class="small">≈ '+(flow/1000).toFixed(2)+' m³/h</div>';
+}
+</script>
+
+</body>
+</html>
